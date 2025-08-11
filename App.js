@@ -11,9 +11,24 @@ import SegmentedControl from '@react-native-segmented-control/segmented-control'
 import AddNoteModal from './components/AddNoteModal';
 import { Ionicons } from '@expo/vector-icons';
 const INITIAL_NOTES = [
-  { id: '1', title: 'Первая заметка', content: 'Текст заметки №1' },
-  { id: '2', title: 'Вторая заметка', content: 'Текст заметки №2' },
-  { id: '3', title: 'Третья заметка', content: 'Текст заметки №3' },
+  {
+    id: '1',
+    title: 'Первая заметка',
+    content: 'Текст заметки №1',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    title: 'Вторая заметка',
+    content: 'Текст заметки №2',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '3',
+    title: 'Третья заметка',
+    content: 'Текст заметки №3',
+    createdAt: new Date().toISOString(),
+  },
 ];
 export default function App() {
   const { t } = useTranslation();
@@ -27,12 +42,10 @@ export default function App() {
   );
   const [lang, setLang] = useState(initialLang);
 
-  // индекс для SegmentedControl (0 = EN, 1 = RU)
   const langs = ['EN', 'RU'];
   const [index, setIndex] = useState(initialLang === 'ru' ? 1 : 0);
 
   useEffect(() => {
-    // если lang изменили где-то ещё — держим индекс в синхроне
     setIndex(lang === 'ru' ? 1 : 0);
   }, [lang]);
 
@@ -40,7 +53,11 @@ export default function App() {
     setLang(value);
     i18n.changeLanguage(value);
   };
-  const handleAddNote = (note) => setNotes((prev) => [note, ...prev]);
+  const handleAddNote = (note) =>
+    setNotes((prev) => [
+      { ...note, createdAt: note.createdAt || new Date().toISOString() },
+      ...prev,
+    ]);
   return (
     <>
       <StatusBar style="dark" />
@@ -64,7 +81,7 @@ export default function App() {
         <Text style={styles.subText}>{t('welcome')}</Text>
         <NotesListScreen notes={notes} setNotes={setNotes} />
 
-        {/* Floating Action Button */}
+        {/* Button */}
         <Pressable
           style={styles.fab}
           onPress={() => setShowModal(true)}
@@ -76,7 +93,7 @@ export default function App() {
         <AddNoteModal
           visible={showModal}
           onClose={() => setShowModal(false)}
-          onSave={handleAddNote} 
+          onSave={handleAddNote}
         />
       </SafeAreaView>
     </>

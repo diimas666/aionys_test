@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 const NotesListScreen = ({ notes, setNotes }) => {
   const { t } = useTranslation();
 
-  // какую заметку редактируем (null = ничего)
   const [editing, setEditing] = useState(null);
 
   const deleteNote = (id) => {
@@ -33,8 +32,9 @@ const NotesListScreen = ({ notes, setNotes }) => {
           <NoteItem
             title={item.title}
             content={item.content}
+            date={item.createdAt}
             onAdd={() => {}}
-            onEdit={() => openEdit(item)} // ← открываем модалку редактирования
+            onEdit={() => openEdit(item)}
             onDelete={() => deleteNote(item.id)}
           />
         )}

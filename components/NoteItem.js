@@ -1,36 +1,54 @@
-import { View, StyleSheet, Text, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // добавляем иконки
+import { View, StyleSheet, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-
 import MyButton from './MyButton';
-const NoteItem = ({ title, content, onAdd, onEdit, onDelete }) => {
-  const { t } = useTranslation();
+
+const NoteItem = ({ title, content, date, onAdd, onEdit, onDelete }) => {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language?.startsWith('ru') ? 'ru-RU' : 'en-US';
+  const formatted = date
+    ? new Date(date).toLocaleString(locale, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : '';
 
   return (
     <View style={styles.card}>
-      {/* title */}
-      {/* Заголовок + иконка удаления */}
       <View style={styles.headerRow}>
-        <Text style={styles.title}>{title}</Text>
-        <Pressable onPress={onDelete} style={styles.deleteButton}>
-          <Ionicons name="trash" size={24} color="red" />
-        </Pressable>
+        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+          {title}
+        </Text>
       </View>
-      {/* тест  */}
+
       <Text style={styles.bodyText}>{content}</Text>
-      {/* кнопки  */}
+
       <View style={styles.buttonsContainer}>
         <View style={styles.button}>
-          <MyButton onPress={onAdd}>
-            <Text style={styles.buttonText}>{t('buttons.add')}</Text>
+          <MyButton onPress={onDelete}>
+            <View style={styles.deleteRow}>
+              <Ionicons name="trash" size={16} color="red" />
+              <Text style={styles.buttonText}>{t('buttons.delete')}</Text>
+            </View>
           </MyButton>
         </View>
         <View style={styles.button}>
           <MyButton onPress={onEdit}>
-            <Text style={styles.buttonText}>{t('buttons.edit')}</Text>{' '}
+            <Text style={styles.buttonText}>{t('buttons.edit')}</Text>
           </MyButton>
         </View>
       </View>
+
+      {/* Дата внизу карточки */}
+      {!!formatted && (
+        <View style={styles.metaRow}>
+          <Ionicons name="time-outline" size={14} color="#777" />
+          <Text style={styles.metaText}>{formatted}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -48,28 +66,31 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
-  },
-  button: {
-    flex: 1,
-    marginHorizontal: 4,
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-  },
-  bodyText: {
-    fontSize: 16,
-    marginBottom: 20,
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 10,
+    flex: 1,
   },
-  buttonText: {
-    fontSize: 14,
-    textAlign: 'center',
+  bodyText: { fontSize: 16, marginBottom: 20 },
+  buttonsContainer: { flexDirection: 'row' },
+  button: { flex: 1, marginHorizontal: 4 },
+  buttonText: { fontSize: 14, textAlign: 'center' },
+  deleteRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
   },
+  metaRow: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    opacity: 0.7,
+  },
+  metaText: { fontSize: 12, color: '#666' },
 });
