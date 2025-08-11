@@ -10,9 +10,15 @@ import SegmentedControl from '@react-native-segmented-control/segmented-control'
 // components
 import AddNoteModal from './components/AddNoteModal';
 import { Ionicons } from '@expo/vector-icons';
-
+const INITIAL_NOTES = [
+  { id: '1', title: 'Первая заметка', content: 'Текст заметки №1' },
+  { id: '2', title: 'Вторая заметка', content: 'Текст заметки №2' },
+  { id: '3', title: 'Третья заметка', content: 'Текст заметки №3' },
+];
 export default function App() {
   const { t } = useTranslation();
+  const [notes, setNotes] = useState(INITIAL_NOTES);
+
   const [showModal, setShowModal] = useState(false);
 
   const initialLang = useMemo(
@@ -34,7 +40,7 @@ export default function App() {
     setLang(value);
     i18n.changeLanguage(value);
   };
-
+  const handleAddNote = (note) => setNotes((prev) => [note, ...prev]);
   return (
     <>
       <StatusBar style="dark" />
@@ -56,7 +62,7 @@ export default function App() {
         </View>
 
         <Text style={styles.subText}>{t('welcome')}</Text>
-        <NotesListScreen />
+        <NotesListScreen notes={notes} setNotes={setNotes} />
 
         {/* Floating Action Button */}
         <Pressable
@@ -70,7 +76,7 @@ export default function App() {
         <AddNoteModal
           visible={showModal}
           onClose={() => setShowModal(false)}
-          onSave={(note) => console.log('saved:', note)} // пока просто лог
+          onSave={handleAddNote} 
         />
       </SafeAreaView>
     </>

@@ -1,29 +1,64 @@
-import { View, FlatList, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, FlatList, StyleSheet, Text } from 'react-native';
 import NoteItem from '../components/NoteItem';
-const notes = [
-  { id: '1', title: 'Первая заметка', content: 'Текст заметки №1' },
-  { id: '2', title: 'Вторая заметка', content: 'Текст заметки №2' },
-  { id: '3', title: 'Третья заметка', content: 'Текст заметки №3' },
-];
-const NotesListScreen = () => {
+import EditNoteModal from '../components/EditNoteModal';
+import { useTranslation } from 'react-i18next';
+
+const NotesListScreen = ({ notes, setNotes }) => {
+  const { t } = useTranslation();
+
+  // какую заметку редактируем (null = ничего)
+  const [editing, setEditing] = useState(null);
+
+  const deleteNote = (id) => {
+    setNotes((prev) => prev.filter((n) => n.id !== id));
+  };
+
+  const openEdit = (note) => setEditing(note);
+  const closeEdit = () => setEditing(null);
+
+  const saveEdit = ({ title, content }) => {
+    setNotes((prev) =>
+      prev.map((n) => (n.id === editing.id ? { ...n, title, content } : n))
+    );
+    closeEdit();
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
         data={notes}
-        renderItem={({ item }) => {
-          return <NoteItem title={item.title} content={item.content} />;
-        }}
         keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <NoteItem
+            title={item.title}
+            content={item.content}
+            onAdd={() => {}}
+            onEdit={() => openEdit(item)} // ← открываем модалку редактирования
+            onDelete={() => deleteNote(item.id)}
+          />
+        )}
+        ListEmptyComponent={
+          <Text style={{ textAlign: 'center', marginTop: 16 }}>
+            {t('notNotes')}
+          </Text>
+        }
+      />
+
+      {/* Модалка редактирования */}
+      <EditNoteModal
+        visible={!!editing}
+        onClose={closeEdit}
+        initialTitle={editing?.title || ''}
+        initialContent={editing?.content || ''}
+        onSave={saveEdit}
       />
     </View>
   );
 };
 
 export default NotesListScreen;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#f0f0f0',
-  },
+  container: { flex: 1, padding: 16, backgroundColor: '#f0f0f0' },
 });
