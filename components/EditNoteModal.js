@@ -9,6 +9,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 export default function EditNoteModal({
   visible,
@@ -19,6 +20,7 @@ export default function EditNoteModal({
 }) {
   const [title, setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (visible) {
@@ -47,16 +49,16 @@ export default function EditNoteModal({
       >
         <View style={styles.backdrop} />
         <View style={styles.card}>
-          <Text style={styles.title}>Редактировать заметку</Text>
+          <Text style={styles.title}>{t('editNotes')}</Text>
 
           <TextInput
-            placeholder="Заголовок"
+            placeholder={t('title')}
             value={title}
             onChangeText={setTitle}
             style={styles.input}
           />
           <TextInput
-            placeholder="Текст"
+            placeholder={t('text')}
             value={content}
             onChangeText={setContent}
             style={[styles.input, styles.multiline]}
@@ -65,13 +67,13 @@ export default function EditNoteModal({
 
           <View style={styles.row}>
             <Pressable style={[styles.btn, styles.secondary]} onPress={onClose}>
-              <Text>Отмена</Text>
+              <Text>{t('cancel')}</Text>
             </Pressable>
             <Pressable
               style={[styles.btn, styles.primary]}
               onPress={handleSave}
             >
-              <Text style={styles.primaryText}>Сохранить</Text>
+              <Text style={styles.primaryText}>{t('save')}</Text>
             </Pressable>
           </View>
         </View>
