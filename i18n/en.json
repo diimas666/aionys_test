@@ -1,0 +1,20 @@
+{
+  "hello": "Hello!",
+  "welcome": "Welcome to my app",
+  "notes": "Notes",
+  "add": "Add",
+  "edit": "Edit",
+  "delete": "Delete",
+  "title": "Title",
+  "text": "Text",
+  "save": "Save",
+  "noteTitle": "New Note",
+  "cancel": "Cancel",
+  "buttons": {
+    "add": "Add",
+    "edit": "Edit"
+  },
+  "addNote": {
+  "a11y": "Add a new note"
+}
+}
