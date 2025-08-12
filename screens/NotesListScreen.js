@@ -3,23 +3,22 @@ import { View, FlatList, StyleSheet, Text } from 'react-native';
 import NoteItem from '../components/NoteItem';
 import EditNoteModal from '../components/EditNoteModal';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteNote, editNote } from '../store/notesSlice';
 
-const NotesListScreen = ({ notes, setNotes }) => {
+const NotesListScreen = () => {
   const { t } = useTranslation();
 
-  const [editing, setEditing] = useState(null);
+  const notes = useSelector((state) => state.notes);
+  const dispatch = useDispatch();
 
-  const deleteNote = (id) => {
-    setNotes((prev) => prev.filter((n) => n.id !== id));
-  };
+  const [editing, setEditing] = useState(null);
 
   const openEdit = (note) => setEditing(note);
   const closeEdit = () => setEditing(null);
 
   const saveEdit = ({ title, content }) => {
-    setNotes((prev) =>
-      prev.map((n) => (n.id === editing.id ? { ...n, title, content } : n))
-    );
+    dispatch(editNote({ id: editing.id, title, content }));
     closeEdit();
   };
 
@@ -33,9 +32,8 @@ const NotesListScreen = ({ notes, setNotes }) => {
             title={item.title}
             content={item.content}
             date={item.createdAt}
-            onAdd={() => {}}
             onEdit={() => openEdit(item)}
-            onDelete={() => deleteNote(item.id)}
+            onDelete={() => dispatch(deleteNote(item.id))}
           />
         )}
         ListEmptyComponent={
@@ -45,7 +43,6 @@ const NotesListScreen = ({ notes, setNotes }) => {
         }
       />
 
-      {/* Модалка редактирования */}
       <EditNoteModal
         visible={!!editing}
         onClose={closeEdit}

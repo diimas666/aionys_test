@@ -11,10 +11,9 @@ import {
   ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-
 export default function AddNoteModal({ visible, onClose, onSave }) {
   const { t } = useTranslation();
-
+  
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
