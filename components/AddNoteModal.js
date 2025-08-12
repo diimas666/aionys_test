@@ -11,20 +11,16 @@ import {
   ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+
 export default function AddNoteModal({ visible, onClose, onSave }) {
   const { t } = useTranslation();
-  
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const handleSave = () => {
-    if (!title.trim()) return;
-    onSave?.({
-      id: Date.now().toString(),
-      date: new Date().toISOString(),
-      title: title.trim(),
-      content: content.trim(),
-    });
+    const titleTrim = title.trim();
+    if (!titleTrim) return;
+    onSave?.({ title: titleTrim, content: content.trim() });
     setTitle('');
     setContent('');
     onClose?.();
@@ -39,15 +35,12 @@ export default function AddNoteModal({ visible, onClose, onSave }) {
       statusBarTranslucent
       presentationStyle="overFullScreen"
     >
-      {/* KAV сдвигает нижний лист при открытии клавиатуры */}
       <KeyboardAvoidingView
         style={styles.kav}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 24 : 0} // при необходимости увеличьте
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 24 : 0}
       >
-        {/* полупрозрачный фон */}
         <Pressable style={styles.backdrop} onPress={onClose} />
-        {/* сам «лист» */}
         <View style={styles.sheet}>
           <Text style={styles.title}>{t('noteTitle')}</Text>
 

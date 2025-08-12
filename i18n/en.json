@@ -7,6 +7,7 @@
   "delete": "Delete",
   "title": "Title",
   "text": "Text",
+  "loading": "Loading..",
   "editNotes": "Edit note",
   "notNotes": "Not notes",
   "save": "Save",
@@ -18,6 +19,6 @@
     "delete": "Delete"
   },
   "addNote": {
-  "a11y": "Add a new note"
-}
+    "a11y": "Add a new note"
+  }
 }

@@ -7,7 +7,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { useDispatch } from 'react-redux';
-import { addNote } from './store/notesSlice';
+import { createNote } from './store/notesSlice';
 import AddNoteModal from './components/AddNoteModal';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -16,7 +16,6 @@ export default function App() {
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
-
 
   const initialLang = useMemo(
     () => (i18n.language?.startsWith('ru') ? 'ru' : 'en'),
@@ -39,7 +38,6 @@ export default function App() {
     <>
       <StatusBar style="dark" />
       <SafeAreaView style={styles.container}>
-        {/* Заголовок */}
         <View style={styles.header}>
           <Text style={styles.greeting}>{t('hello')}</Text>
           <View style={styles.segmentWrap}>
@@ -55,13 +53,10 @@ export default function App() {
           </View>
         </View>
 
-        {/* Текст приветствия */}
         <Text style={styles.subText}>{t('welcome')}</Text>
 
-        {/* Список заметок */}
         <NotesListScreen />
 
-        {/* Кнопка добавления */}
         <Pressable
           style={styles.fab}
           onPress={() => setShowModal(true)}
@@ -70,11 +65,10 @@ export default function App() {
           <Ionicons name="add" size={28} color="#fff" />
         </Pressable>
 
-        {/* Модалка добавления */}
         <AddNoteModal
           visible={showModal}
           onClose={() => setShowModal(false)}
-          onSave={(note) => dispatch(addNote(note))}
+          onSave={(note) => dispatch(createNote(note))}
         />
       </SafeAreaView>
     </>
