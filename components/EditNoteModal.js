@@ -52,12 +52,14 @@ export default function EditNoteModal({
           <Text style={styles.title}>{t('editNotes')}</Text>
 
           <TextInput
+            testID="title-input"
             placeholder={t('title')}
             value={title}
             onChangeText={setTitle}
             style={styles.input}
           />
           <TextInput
+            testID="content-input"
             placeholder={t('text')}
             value={content}
             onChangeText={setContent}
@@ -66,10 +68,15 @@ export default function EditNoteModal({
           />
 
           <View style={styles.row}>
-            <Pressable style={[styles.btn, styles.secondary]} onPress={onClose}>
+            <Pressable
+              testID="cancel-btn"
+              style={[styles.btn, styles.secondary]}
+              onPress={onClose}
+            >
               <Text>{t('cancel')}</Text>
             </Pressable>
             <Pressable
+              testID="save-btn"
               style={[styles.btn, styles.primary]}
               onPress={handleSave}
             >

@@ -4,7 +4,7 @@ import NotesListScreen from './screens/NotesListScreen';
 import i18n from './i18n';
 import { useTranslation } from 'react-i18next';
 import { useState, useMemo, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { useDispatch } from 'react-redux';
 import { createNote } from './store/notesSlice';
@@ -36,41 +36,44 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="dark" />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.greeting}>{t('hello')}</Text>
-          <View style={styles.segmentWrap}>
-            <SegmentedControl
-              values={langs}
-              selectedIndex={index}
-              onChange={(e) => {
-                const i = e.nativeEvent.selectedSegmentIndex;
-                setIndex(i);
-                onChangeLang(i === 1 ? 'ru' : 'en');
-              }}
-            />
+      <SafeAreaProvider>
+        <StatusBar style="dark" />
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.greeting}>{t('hello')}</Text>
+            <View style={styles.segmentWrap}>
+              <SegmentedControl
+                values={langs}
+                selectedIndex={index}
+                onChange={(e) => {
+                  const i = e.nativeEvent.selectedSegmentIndex;
+                  setIndex(i);
+                  onChangeLang(i === 1 ? 'ru' : 'en');
+                }}
+              />
+            </View>
           </View>
-        </View>
 
-        <Text style={styles.subText}>{t('welcome')}</Text>
+          <Text style={styles.subText}>{t('welcome')}</Text>
 
-        <NotesListScreen />
+          <NotesListScreen />
 
-        <Pressable
-          style={styles.fab}
-          onPress={() => setShowModal(true)}
-          accessibilityLabel={t('addNote.a11y')}
-        >
-          <Ionicons name="add" size={28} color="#fff" />
-        </Pressable>
+          <Pressable
+            testID="add-btn"
+            style={styles.fab}
+            onPress={() => setShowModal(true)}
+            accessibilityLabel={t('addNote.a11y')}
+          >
+            <Ionicons name="add" size={28} color="#fff" />
+          </Pressable>
 
-        <AddNoteModal
-          visible={showModal}
-          onClose={() => setShowModal(false)}
-          onSave={(note) => dispatch(createNote(note))}
-        />
-      </SafeAreaView>
+          <AddNoteModal
+            visible={showModal}
+            onClose={() => setShowModal(false)}
+            onSave={(note) => dispatch(createNote(note))}
+          />
+        </SafeAreaView>
+      </SafeAreaProvider>
     </>
   );
 }

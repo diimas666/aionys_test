@@ -49,6 +49,7 @@ export default function AddNoteModal({ visible, onClose, onSave }) {
             contentContainerStyle={styles.content}
           >
             <TextInput
+              testID="title-input"
               placeholder={t('title')}
               value={title}
               onChangeText={setTitle}
@@ -56,6 +57,7 @@ export default function AddNoteModal({ visible, onClose, onSave }) {
               returnKeyType="next"
             />
             <TextInput
+              testID="content-input"
               placeholder={t('text')}
               value={content}
               onChangeText={setContent}
@@ -66,12 +68,17 @@ export default function AddNoteModal({ visible, onClose, onSave }) {
 
           <View style={styles.row}>
             <Pressable
+              testID="save-btn"
               style={[styles.btn, styles.primary]}
               onPress={handleSave}
             >
               <Text style={styles.primaryText}>{t('save')}</Text>
             </Pressable>
-            <Pressable style={[styles.btn, styles.secondary]} onPress={onClose}>
+            <Pressable
+              testID="cancel-btn"
+              style={[styles.btn, styles.secondary]}
+              onPress={onClose}
+            >
               <Text>{t('cancel')}</Text>
             </Pressable>
           </View>
