@@ -28,7 +28,7 @@ const NoteItem = ({ title, content, date, onEdit, onDelete }) => {
 
       <View style={styles.buttonsContainer}>
         <View style={styles.button}>
-          <MyButton onPress={onDelete}>
+          <MyButton testID="delete-btn" onPress={onDelete}>
             <View style={styles.deleteRow}>
               <Ionicons name="trash" size={16} color="red" />
               <Text style={styles.buttonText}>{t('buttons.delete')}</Text>
@@ -36,7 +36,7 @@ const NoteItem = ({ title, content, date, onEdit, onDelete }) => {
           </MyButton>
         </View>
         <View style={styles.button}>
-          <MyButton onPress={onEdit}>
+          <MyButton testID="edit-btn" onPress={onEdit}>
             <Text style={styles.buttonText}>{t('buttons.edit')}</Text>
           </MyButton>
         </View>

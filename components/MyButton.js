@@ -1,13 +1,23 @@
 import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
-const MyButton = ({ children, onPress }) => {
+const MyButton = ({ children, onPress, testID, accessibilityLabel }) => {
+  const content =
+    typeof children === 'string' ? (
+      <Text style={styles.text}>{children}</Text>
+    ) : (
+      children
+    );
+
   return (
     <View style={styles.buttonOuter}>
       <Pressable
+        testID={testID}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
         onPress={onPress}
         style={({ pressed }) => [styles.buttonInner, pressed && styles.pressed]}
         android_ripple={{ color: 'black' }}
       >
-        <Text style={styles.text}>{children}</Text>
+        {content}
       </Pressable>
     </View>
   );
