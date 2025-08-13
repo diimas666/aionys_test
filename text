@@ -1,2 +1,62 @@
 # запустить все тесты
 npm test
+
+1) Запустить API (backend)
+bash
+Копировать
+Редактировать
+cd backend
+npm i
+npm start          # API поднимется на http://localhost:4000
+Если порт другой — поправь EXPO_PUBLIC_API_URL на фронтенде (см. ниже).
+
+2) Запустить клиент (frontend, веб через Expo)
+bash
+Копировать
+Редактировать
+cd ../frontend
+npm i
+
+# Только при первом запуске веба:
+npx expo install react-dom react-native-web @expo/metro-runtime
+
+# Укажи адрес API (если ещё не указан)
+echo "EXPO_PUBLIC_API_URL=http://localhost:4000" > .env.local
+
+npm run web        # откроется http://localhost:8081 (или спросит 8082, если 8081 занят)
+Важно: если Expo стартовал на 8082, обнови этот порт в cypress.config.js → baseUrl: 'http://localhost:8082'.
+
+3) Unit/Integration тесты (Jest)
+bash
+Копировать
+Редактировать
+cd frontend
+npm test
+4) E2E тест (Cypress, веб)
+E2E гоняем «в трёх терминалах»:
+
+Терминал 1 — backend
+
+bash
+Копировать
+Редактировать
+cd backend
+npm start
+Терминал 2 — frontend (web)
+
+bash
+Копировать
+Редактировать
+cd frontend
+npm run web           # запомни порт (8081/8082) и проверь cypress.config.js
+Терминал 3 — Cypress
+
+bash
+Копировать
+Редактировать
+cd frontend
+npm run cypress       # GUI (выбери E2E Testing → notes.cy.js)
+# или без окна:
+# npm run cy:run
+Тест лежит тут: frontend/cypress/e2e/notes.cy.js
+Он через UI: создаёт заметку → редактирует → удаляет (работая с реальным API).
