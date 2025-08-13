@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import MyButton from './MyButton';
 
-const NoteItem = ({ title, content, date, onEdit, onDelete }) => {
+const NoteItem = ({ id, title, content, date, onEdit, onDelete }) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.language?.startsWith('ru') ? 'ru-RU' : 'en-US';
   const formatted = date
@@ -17,9 +17,14 @@ const NoteItem = ({ title, content, date, onEdit, onDelete }) => {
     : '';
 
   return (
-    <View style={styles.card}>
+    <View style={styles.card} testID={`note-${id}`}>
       <View style={styles.headerRow}>
-        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+        <Text
+          style={styles.title}
+          testID="note-title"
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
           {title}
         </Text>
       </View>
@@ -42,7 +47,6 @@ const NoteItem = ({ title, content, date, onEdit, onDelete }) => {
         </View>
       </View>
 
-      {/* дата  */}
       {!!formatted && (
         <View style={styles.metaRow}>
           <Ionicons name="time-outline" size={14} color="#777" />

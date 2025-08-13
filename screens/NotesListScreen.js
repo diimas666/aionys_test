@@ -40,6 +40,7 @@ const NotesListScreen = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <NoteItem
+            id={item.id}
             title={item.title}
             content={item.content}
             date={item.createdAt}
@@ -55,8 +56,6 @@ const NotesListScreen = () => {
           ) : null
         }
       />
-
-     
 
       <EditNoteModal
         visible={!!editing}
