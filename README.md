@@ -21,7 +21,10 @@ Chrome (или другой браузер)
 Файл теста: notes.cy.js
 
 !Запустить тест и дождаться завершения.!
+Технологии:
+Frontend: React Native Web, Redux Toolkit, i18n, Expo, MongoDb Atlas
 
+Тесты: Jest, Cypress
 
 
 | Метод  | Маршрут      | Описание               |
